@@ -90,7 +90,8 @@ def send_email_with_attachment(file_path):
     message.attach(MIMEText(body, "plain"))
 
     with open(file_path, "rb") as attachment:
-        part = MIMEText(attachment.read(), "base64")
+        attachment_content = attachment.read()
+        part = MIMEText(attachment_content.decode('utf-8'), "base64")
         part.add_header("Content-Disposition", f"attachment; filename=backup.sql")
         message.attach(part)
 
@@ -103,6 +104,7 @@ def send_email_with_attachment(file_path):
         server.sendmail(sender_email, recipient_email, message.as_string())
 
     print("Email sent successfully!")
+
 
 def backup_and_send_email():
     while True:
