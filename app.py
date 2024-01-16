@@ -54,17 +54,23 @@ def backup_database():
     timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
     backup_file = f'backup_{timestamp}.sql'
 
+    # Set PGPASSWORD environment variable
+    os.environ['PGPASSWORD'] = db_params['password']
+
     pg_dump_cmd = [
         'pg_dump',
         '--host', db_params['host'],
         '--port', db_params['port'],
         '--username', db_params['user'],
-        '--password', db_params['password'],
         '--dbname', db_params['database'],
         '--file', backup_file,
+        '--no-password',  # Disable password prompts
     ]
 
     subprocess.run(pg_dump_cmd)
+
+    # Clear the PGPASSWORD environment variable
+    del os.environ['PGPASSWORD']
 
     return backup_file
 
