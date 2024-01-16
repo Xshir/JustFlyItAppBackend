@@ -107,7 +107,7 @@ def send_email_with_attachment(file_path):
     print("Email sent successfully!")
 
 # Schedule the backup_and_send_email function to run every two weeks
-schedule.every(2).weeks.do(backup_database_and_send_email)
+schedule.every(2).weeks.do(backup_and_send_email)
 
 # Start the threads
 database_update_thread = Thread(target=periodic_database_update)
