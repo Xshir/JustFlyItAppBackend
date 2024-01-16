@@ -23,7 +23,7 @@ db_params = {
 
 def get_usernames():
     try:
-        connection = psycopg2.connect(*db_params)
+        connection = psycopg2.connect(**db_params)
         cursor = connection.cursor()
 
         cursor.execute("SELECT usernames FROM LoginDetails;")
