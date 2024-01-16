@@ -51,6 +51,9 @@ def periodic_database_update():
         username_list = get_usernames()
         time.sleep(5)
 
+# Define a flag to track whether the backup_and_send_email task has been executed
+backup_and_send_email_executed = False
+
 def backup_database():
     timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
     backup_file = f'backup_{timestamp}.sql'
@@ -107,8 +110,14 @@ def send_email_with_attachment(file_path):
     print("Email sent successfully!")
 
 def backup_and_send_email():
-    backup_file_path = backup_database()
-    send_email_with_attachment(backup_file_path)
+    global backup_and_send_email_executed
+
+    if not backup_and_send_email_executed:
+        backup_file_path = backup_database()
+        send_email_with_attachment(backup_file_path)
+
+        # Set the flag to True to indicate that the task has been executed
+        backup_and_send_email_executed = True
 
 # Schedule the backup_and_send_email function to run every two weeks
 schedule.every(2).weeks.do(backup_and_send_email)
