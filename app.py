@@ -10,6 +10,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
+import schedule
 
 app = Flask(__name__)
 CORS(app)
@@ -105,12 +106,12 @@ def send_email_with_attachment(file_path):
 
     print("Email sent successfully!")
 
-
 def backup_and_send_email():
-    while True:
-        backup_file_path = backup_database()
-        send_email_with_attachment(backup_file_path)
-        time.sleep(300)  # 300 seconds = 5 minutes
+    backup_file_path = backup_database()
+    send_email_with_attachment(backup_file_path)
+
+# Schedule the backup_and_send_email function to run every two weeks
+schedule.every(2).weeks.do(backup_and_send_email)
 
 # Start the threads
 database_update_thread = Thread(target=periodic_database_update)
@@ -118,27 +119,6 @@ backup_and_send_email_thread = Thread(target=backup_and_send_email)
 
 database_update_thread.start()
 backup_and_send_email_thread.start()
-
-@app.route('/')
-def home():
-    return render_template('home.html', temperatures=temperatures, logins=username_list)
-
-@app.route('/login', methods=['POST'])
-def login():
-    data = request.get_json()
-    print('Received data:', data)
-    username = data.get('username')
-
-    if username in username_list:
-        print("LOGIN SUCCESS")
-        return jsonify({'success': True, 'message': 'Login successful'})
-    elif username == "devlogin":
-        print("LOGIN SUCCESS (DEVLOGIN)")
-        return jsonify({'success': True, 'message': 'Login successful'})
-    else:
-        print("LOGIN FAILURE")
-        print(username_list, username)
-        return jsonify({'success': False, 'message': 'Invalid username'})
 
 if __name__ == '__main__':
     host_ip = '192.168.0.106'
