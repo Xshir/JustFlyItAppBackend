@@ -78,7 +78,7 @@ def backup_database():
 def send_email_with_attachment(file_path):
     sender_email = "automatedtesting76@gmail.com"
     sender_password = "xmkj qkxl shwd fnno"
-    recipient_email = "support@justflyit.org"
+    recipient_email = "Haashir150@gmail.com"
 
     subject = f"{datetime.now().date()} | JFIApp Database Logs"
     body = "Please find the file attached."
