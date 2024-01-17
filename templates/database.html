@@ -52,14 +52,22 @@
             background-color: #FFD700;
             color: #222222; /* Dark text on gold background */
         }
+
+        /* Additional style for uppercase text */
+        .uppercase {
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
     <h1>Database Admin Page</h1>
     
+    <label for="textTransformSlider">Toggle Uppercase:</label>
+    <input type="range" min="0" max="1" value="0" class="slider" id="textTransformSlider">
+    
     {% for table_name, table_data in tables.items() %}
         <h2>{{ table_name }}</h2>
-        <table>
+        <table id="{{ 'table-' + loop.index }}">
             <tr>
                 {% for column_name in table_data[0].keys() %}
                     <th>{{ column_name }}</th>
@@ -74,5 +82,24 @@
             {% endfor %}
         </table>
     {% endfor %}
+
+    <script>
+        // JavaScript to handle the slider change
+        document.getElementById('textTransformSlider').addEventListener('input', function() {
+            var uppercase = this.value == 1;
+            var tables = document.querySelectorAll('table');
+            
+            tables.forEach(function(table) {
+                var cells = table.querySelectorAll('td');
+                cells.forEach(function(cell) {
+                    if (uppercase) {
+                        cell.classList.add('uppercase');
+                    } else {
+                        cell.classList.remove('uppercase');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
