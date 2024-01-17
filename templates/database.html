@@ -84,10 +84,10 @@
     {% endfor %}
 
     <script>
-        document.getElementById('titleCaseSlider').addEventListener('input', function() {
-            var titleCase = this.value == 1;
+        function updateTitleCase() {
+            var titleCase = document.getElementById('titleCaseSlider').value == 1;
             var tables = document.querySelectorAll('table');
-            
+    
             tables.forEach(function(table) {
                 var headers = table.querySelectorAll('th');
                 headers.forEach(function(header) {
@@ -97,16 +97,12 @@
                 var tableTitle = table.querySelector('h2');
                 tableTitle.classList.toggle('titlecase', titleCase);
             });
-        });
-    
-        // Set initial state based on the default value of the slider
-        var initialTitleCase = document.getElementById('titleCaseSlider').value == 1;
-        if (initialTitleCase) {
-            // If initially set to title case, apply the style
-            document.querySelectorAll('table th, table h2').forEach(function(element) {
-                element.classList.add('titlecase');
-            });
         }
+    
+        document.getElementById('titleCaseSlider').addEventListener('input', updateTitleCase);
+    
+        // Initialize the state based on the default value of the slider
+        updateTitleCase();
     </script>
     
 </body>
