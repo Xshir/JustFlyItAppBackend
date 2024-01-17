@@ -15,7 +15,19 @@
 <body>
     <h1>WebServer</h1>
     
-    <h2>WebServer Is Online</h2.
-    </ul>
+    <h2>WebServer Is Online</h2>
+    <p>Uptime: <span id="uptime"></span></p>
+
+    <script>
+        async function fetchUptime() {
+            const response = await fetch('/uptime');
+            const data = await response.json();
+            document.getElementById('uptime').innerText = data.uptime;
+        }
+
+        fetchUptime();
+
+        setInterval(fetchUptime, 50);
+    </script>
 </body>
 </html>

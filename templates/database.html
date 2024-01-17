@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Admin Page</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid white;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #444;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Database Admin Page</h1>
+    
+    {% for table_name, table_data in tables.items() %}
+        <h2>{{ table_name }}</h2>
+        <table>
+            <tr>
+                {% for column_name in table_data[0]._fields %}
+                    <th>{{ column_name }}</th>
+                {% endfor %}
+            </tr>
+            {% for row in table_data %}
+                <tr>
+                    {% for value in row %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endfor %}
+</body>
+</html>

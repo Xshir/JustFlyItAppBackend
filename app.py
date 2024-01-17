@@ -120,7 +120,40 @@ database_update_thread.start()
 def home():
     return render_template("home.html")
 
+@app.route('/uptime')
+def get_uptime():
+    current_uptime = uptime.uptime()
+    return jsonify({'uptime': current_uptime})
 
+# Route to display database information (admin page)
+@app.route('/database')
+def view_database():
+    try:
+        connection = psycopg2.connect(**db_params)
+        cursor = connection.cursor()
+
+        # Get table names
+        cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_schema='public';")
+        table_names = cursor.fetchall()
+
+        # Get data from each table
+        data = {}
+        for table_name in table_names:
+            cursor.execute(f"SELECT * FROM {table_name[0]};")
+            table_data = cursor.fetchall()
+            data[table_name[0]] = table_data
+
+        return render_template('database.html', tables=data)
+
+    except psycopg2.Error as error:
+        return f"Database Error: {error}"
+
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+
+            
 if __name__ == '__main__':
     host_ip = '192.168.0.106'
     port_number = 80
