@@ -64,6 +64,8 @@
     
     <label for="textTransformSlider">Toggle Uppercase:</label>
     <input type="range" min="0" max="1" value="0" class="slider" id="textTransformSlider">
+
+    <button onclick="toggleTitleCase()">Toggle Title Case</button>
     
     {% for table_name, table_data in tables.items() %}
         <h2>{{ table_name }}</h2>
@@ -84,22 +86,23 @@
     {% endfor %}
 
     <script>
-        // JavaScript to handle the slider change
-        document.getElementById('textTransformSlider').addEventListener('input', function() {
-            var uppercase = this.value == 1;
+        function toggleTitleCase() {
             var tables = document.querySelectorAll('table');
-            
+
             tables.forEach(function(table) {
-                var cells = table.querySelectorAll('td');
-                cells.forEach(function(cell) {
-                    if (uppercase) {
-                        cell.classList.add('uppercase');
-                    } else {
-                        cell.classList.remove('uppercase');
-                    }
+                var headers = table.querySelectorAll('th');
+                headers.forEach(function(header) {
+                    header.textContent = toggleCase(header.textContent);
                 });
             });
-        });
+        }
+
+        function toggleCase(text) {
+            // Toggle between title case and normal case
+            return text.replace(/\w\S*/g, function(word) {
+                return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+            });
+        }
     </script>
 </body>
 </html>
