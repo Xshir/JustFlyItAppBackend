@@ -53,9 +53,9 @@
             color: #222222; /* Dark text on gold background */
         }
 
-        /* Additional style for uppercase text */
-        .uppercase {
-            text-transform: uppercase;
+        /* Additional style for title case text */
+        .titlecase {
+            text-transform: capitalize;
         }
     </style>
 </head>
@@ -91,18 +91,10 @@
             tables.forEach(function(table) {
                 var headers = table.querySelectorAll('th');
                 headers.forEach(function(header) {
-                    var columnIndex = header.classList[1].split('-')[1];
-                    header.textContent = titleCase ? toggleCase(header.textContent) : header.textContent;
+                    header.classList.toggle('titlecase', titleCase);
                 });
             });
         });
-
-        function toggleCase(text) {
-            // Toggle between title case and normal case
-            return text.replace(/\w\S*/g, function(word) {
-                return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
-            });
-        }
     </script>
 </body>
 </html>
