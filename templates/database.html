@@ -58,13 +58,13 @@
         <h2>{{ table_name }}</h2>
         <table>
             <tr>
-                {% for column_name in table_data[0]._fields %}
+                {% for column_name in table_data[0].keys() %}
                     <th>{{ column_name }}</th>
                 {% endfor %}
             </tr>
             {% for row in table_data %}
                 <tr>
-                    {% for value in row %}
+                    {% for value in row.values() %}
                         <td>{{ value }}</td>
                     {% endfor %}
                 </tr>
