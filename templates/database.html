@@ -62,17 +62,15 @@
 <body>
     <h1>Database Admin Page</h1>
     
-    <label for="textTransformSlider">Toggle Uppercase:</label>
-    <input type="range" min="0" max="1" value="0" class="slider" id="textTransformSlider">
+    <label for="titleCaseSlider">Toggle Title Case:</label>
+    <input type="range" min="0" max="1" value="0" class="slider" id="titleCaseSlider">
 
-    <button onclick="toggleTitleCase()">Toggle Title Case</button>
-    
     {% for table_name, table_data in tables.items() %}
         <h2>{{ table_name }}</h2>
         <table id="{{ 'table-' + loop.index|string }}">
             <tr>
                 {% for column_name in table_data[0].keys() %}
-                    <th>{{ column_name }}</th>
+                    <th class="{{ 'titlecase-' + loop.index }}">{{ column_name }}</th>
                 {% endfor %}
             </tr>
             {% for row in table_data %}
@@ -86,16 +84,18 @@
     {% endfor %}
 
     <script>
-        function toggleTitleCase() {
+        document.getElementById('titleCaseSlider').addEventListener('input', function() {
+            var titleCase = this.value == 1;
             var tables = document.querySelectorAll('table');
-
+            
             tables.forEach(function(table) {
                 var headers = table.querySelectorAll('th');
                 headers.forEach(function(header) {
-                    header.textContent = toggleCase(header.textContent);
+                    var columnIndex = header.classList[1].split('-')[1];
+                    header.textContent = titleCase ? toggleCase(header.textContent) : header.textContent;
                 });
             });
-        }
+        });
 
         function toggleCase(text) {
             // Toggle between title case and normal case
