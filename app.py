@@ -125,7 +125,7 @@ def home():
 def get_uptime():
     current_time = time.time()
     uptime_seconds = current_time - app_start_time
-    return jsonify({'uptime': uptime_seconds})
+    return jsonify({'uptime': int(uptime_seconds)})
 
 # Route to display database information (admin page)
 @app.route('/database')
