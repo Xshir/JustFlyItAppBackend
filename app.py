@@ -11,7 +11,6 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 import schedule
-import uptime
 
 app = Flask(__name__)
 CORS(app)
