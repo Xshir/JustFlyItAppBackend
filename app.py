@@ -142,7 +142,13 @@ def view_database():
         data = {}
         for table_name in table_names:
             cursor.execute(f"SELECT * FROM {table_name[0]};")
-            table_data = cursor.fetchall()
+
+            # Fetch column names
+            column_names = [desc[0] for desc in cursor.description]
+
+            # Fetch data
+            table_data = [dict(zip(column_names, row)) for row in cursor.fetchall()]
+
             data[table_name[0]] = table_data
 
         return render_template('database.html', tables=data)
@@ -154,7 +160,6 @@ def view_database():
         if connection:
             cursor.close()
             connection.close()
-
 
 if __name__ == '__main__':
     host_ip = '192.168.0.106'
