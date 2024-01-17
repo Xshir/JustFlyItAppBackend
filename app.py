@@ -11,6 +11,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 import schedule
+import uptime
 
 app = Flask(__name__)
 CORS(app)
@@ -153,7 +154,7 @@ def view_database():
             cursor.close()
             connection.close()
 
-            
+
 if __name__ == '__main__':
     host_ip = '192.168.0.106'
     port_number = 80
