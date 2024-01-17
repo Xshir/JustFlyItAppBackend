@@ -67,7 +67,7 @@
     
     {% for table_name, table_data in tables.items() %}
         <h2>{{ table_name }}</h2>
-        <table id="{{ 'table-' + loop.index }}">
+        <table id="{{ 'table-' + loop.index|string }}">
             <tr>
                 {% for column_name in table_data[0].keys() %}
                     <th>{{ column_name }}</th>
