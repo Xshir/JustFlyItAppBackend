@@ -112,10 +112,14 @@ def backup_and_send_email():
 
 # Schedule the backup_and_send_email function to run every two weeks
 schedule.every(2).weeks.do(backup_and_send_email)
-
 # Start the threads
 database_update_thread = Thread(target=periodic_database_update)
 database_update_thread.start()
+
+@app.route("/")
+def home():
+    return render_template("home.html")
+
 
 if __name__ == '__main__':
     host_ip = '192.168.0.106'
