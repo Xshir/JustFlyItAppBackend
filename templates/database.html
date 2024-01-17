@@ -70,7 +70,7 @@
         <table id="{{ 'table-' + loop.index|string }}">
             <tr>
                 {% for column_name in table_data[0].keys() %}
-                    <th class="{{ 'titlecase-' + loop.index }}">{{ column_name }}</th>
+                    <th class="{{ 'titlecase-' + loop.index|string }}">{{ column_name }}</th>
                 {% endfor %}
             </tr>
             {% for row in table_data %}
