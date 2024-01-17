@@ -9,6 +9,30 @@
             background-color: black;
             color: white;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1, h2, p {
+            margin: 10px;
+        }
+
+        h1 {
+            font-size: 2em;
+        }
+
+        h2 {
+            font-size: 1.5em;
+        }
+
+        #uptime {
+            font-size: 1.2em;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -22,7 +46,16 @@
         async function fetchUptime() {
             const response = await fetch('/uptime');
             const data = await response.json();
-            document.getElementById('uptime').innerText = data.uptime;
+            const uptimeElement = document.getElementById('uptime');
+            uptimeElement.innerText = formatUptime(data.uptime);
+        }
+
+        function formatUptime(uptime) {
+            const days = Math.floor(uptime / (60 * 60 * 24));
+            const hours = Math.floor((uptime % (60 * 60 * 24)) / (60 * 60));
+            const minutes = Math.floor((uptime % (60 * 60)) / 60);
+            const seconds = Math.floor(uptime % 60);
+            return `${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
 
         fetchUptime();
