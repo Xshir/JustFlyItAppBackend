@@ -66,11 +66,11 @@
     <input type="range" min="0" max="1" value="0" class="slider" id="titleCaseSlider">
 
     {% for table_name, table_data in tables.items() %}
-        <h2 class="{{ 'titlecase-' + loop.index|string }}">{{ table_name|replace('_', ' ')|replace(' ', '_')|title|replace('_', ' ')|string }}</h2>
+        <h2 class="{{ 'titlecase-' + loop.index }}">{{ table_name|replace('_', ' ')|replace(' ', '_')|title|replace('_', ' ')|string }}</h2>
         <table id="{{ 'table-' + loop.index|string }}">
             <tr>
                 {% for column_name in table_data[0].keys() %}
-                    <th class="{{ 'titlecase-' + loop.index|string }}">{{ column_name|replace('_', ' ')|replace(' ', '_')|title|replace('_', ' ')|string }}</th>
+                    <th class="{{ 'titlecase-' + loop.index }}">{{ column_name|replace('_', ' ')|replace(' ', '_')|title|replace('_', ' ')|string }}</th>
                 {% endfor %}
             </tr>
             {% for row in table_data %}
