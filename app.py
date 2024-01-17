@@ -17,6 +17,7 @@ app = Flask(__name__)
 CORS(app)
 username_list = []
 temperatures = []
+app_start_time = time.time()
 
 # PostgreSQL connection parameters
 db_params = {
@@ -123,8 +124,9 @@ def home():
 
 @app.route('/uptime')
 def get_uptime():
-    current_uptime = uptime.uptime()
-    return jsonify({'uptime': current_uptime})
+    current_time = time.time()
+    uptime_seconds = current_time - app_start_time
+    return jsonify({'uptime': uptime_seconds})
 
 # Route to display database information (admin page)
 @app.route('/database')
