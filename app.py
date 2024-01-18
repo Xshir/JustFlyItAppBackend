@@ -196,9 +196,10 @@ def get_trainers_profile_data():
         for row in cursor.fetchall():
             row_dict = dict(zip(column_names, row))
 
-            # Convert bytea data to base64-encoded string
-            if 'profile_picture' in row_dict and row_dict['profile_picture'] is not None:
-                row_dict['profile_picture'] = base64.b64encode(row_dict['profile_picture']).decode('utf-8')
+            # Extract and convert profile picture to base64-encoded string
+            if 'profile_picture_bytea' in row_dict and row_dict['profile_picture_bytea'] is not None:
+                profile_picture_bytea = base64.b64encode(row_dict['profile_picture_bytea']).decode('utf-8')
+                row_dict['profile_picture'] = f"data:image/jpeg;base64,{profile_picture_bytea}"
 
             table_data.append(row_dict)
 
