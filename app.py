@@ -196,6 +196,11 @@ def get_trainers_profile_data():
         for row in cursor.fetchall():
             row_dict = dict(zip(column_names, row))
 
+            # Convert boolean values to strings
+            for key, value in row_dict.items():
+                if isinstance(value, bool):
+                    row_dict[key] = str(value)
+
             # Extract and convert profile picture to base64-encoded string
             if 'profile_picture' in row_dict and row_dict['profile_picture'] is not None:
                 profile_picture_bytea = bytes(row_dict['profile_picture'])  # Convert to bytes
