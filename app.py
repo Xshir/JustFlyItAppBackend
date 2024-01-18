@@ -178,7 +178,6 @@ def view_database():
         if connection:
             cursor.close()
             connection.close()
-
 @app.route('/trainers_profile_data')
 def get_trainers_profile_data():
     try:
@@ -198,7 +197,7 @@ def get_trainers_profile_data():
 
             # Extract and convert profile picture to base64-encoded string
             if 'profile_picture_bytea' in row_dict and row_dict['profile_picture_bytea'] is not None:
-                profile_picture_bytea = bytes(row_dict['profile_picture_bytea'])  # Convert to bytes
+                profile_picture_bytea = row_dict['profile_picture_bytea'].tobytes()  # Convert to bytes
                 profile_picture_base64 = base64.b64encode(profile_picture_bytea).decode('utf-8')
                 row_dict['profile_picture'] = f"data:image/jpeg;base64,{profile_picture_base64}"
 
