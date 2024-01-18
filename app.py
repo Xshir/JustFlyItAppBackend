@@ -196,7 +196,7 @@ def get_trainers_profile_data():
         for row in cursor.fetchall():
             row_dict = dict(zip(column_names, row))
 
-            # Convert bytea data to Base64
+            # Convert bytea data to base64-encoded string
             if 'profile_picture' in row_dict and row_dict['profile_picture'] is not None:
                 row_dict['profile_picture'] = base64.b64encode(row_dict['profile_picture']).decode('utf-8')
 
@@ -211,7 +211,6 @@ def get_trainers_profile_data():
         if connection:
             cursor.close()
             connection.close()
-
 
 if __name__ == '__main__':
     host_ip = '192.168.0.106'
