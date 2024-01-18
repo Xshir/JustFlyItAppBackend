@@ -46,6 +46,7 @@ def get_usernames():
             cursor.close()
             connection.close()
 
+
 def periodic_database_update():
     global username_list
     while True:
@@ -177,6 +178,32 @@ def view_database():
         if connection:
             cursor.close()
             connection.close()
+
+@app.route('/trainers_profile_data')
+def get_trainers_profile_data():
+    try:
+        connection = psycopg2.connect(**db_params)
+        cursor = connection.cursor()
+
+        # Get data from trainers_profile_data table
+        cursor.execute("SELECT * FROM trainers_profile_data;")
+        
+        # Fetch column names
+        column_names = [desc[0] for desc in cursor.description]
+
+        # Fetch data
+        table_data = [dict(zip(column_names, row)) for row in cursor.fetchall()]
+
+        return jsonify({'trainers_profile_data': table_data})
+
+    except psycopg2.Error as error:
+        return jsonify({'error': f"Database Error: {error}"}), 500
+
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+
 
 if __name__ == '__main__':
     host_ip = '192.168.0.106'
