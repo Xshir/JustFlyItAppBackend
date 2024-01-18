@@ -10,7 +10,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
-import schedule
+import schedule, base64
 
 app = Flask(__name__)
 CORS(app)
@@ -187,12 +187,20 @@ def get_trainers_profile_data():
 
         # Get data from trainers_profile_data table
         cursor.execute("SELECT * FROM trainers_profile_data;")
-        
+
         # Fetch column names
         column_names = [desc[0] for desc in cursor.description]
 
         # Fetch data
-        table_data = [dict(zip(column_names, row)) for row in cursor.fetchall()]
+        table_data = []
+        for row in cursor.fetchall():
+            row_dict = dict(zip(column_names, row))
+
+            # Convert bytea data to Base64
+            if 'profile_picture' in row_dict and row_dict['profile_picture'] is not None:
+                row_dict['profile_picture'] = base64.b64encode(row_dict['profile_picture']).decode('utf-8')
+
+            table_data.append(row_dict)
 
         return jsonify({'trainers_profile_data': table_data})
 
