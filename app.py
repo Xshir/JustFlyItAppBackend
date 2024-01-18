@@ -32,7 +32,7 @@ def get_usernames():
         connection = psycopg2.connect(**db_params)
         cursor = connection.cursor()
 
-        cursor.execute("SELECT usernames FROM LoginDetails;")
+        cursor.execute("SELECT usernames FROM login_details;")
         usernames = cursor.fetchall()
 
         return [username[0] for username in usernames]
