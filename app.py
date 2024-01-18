@@ -121,6 +121,23 @@ database_update_thread.start()
 def home():
     return render_template("home.html")
 
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    print('Received data:', data)
+    username = data.get('username')
+
+    if username in username_list:
+        print("LOGIN SUCCESS")
+        return jsonify({'success': True, 'message': 'Login successful'})
+    elif username == "devlogin":
+        print("LOGIN SUCCESS (DEVLOGIN)")
+        return jsonify({'success': True, 'message': 'Login successful'})
+    else:
+        print("LOGIN FAILURE")
+        print(username_list, username)
+        return jsonify({'success': False, 'message': 'Invalid username'})
+    
 @app.route('/uptime')
 def get_uptime():
     current_time = time.time()
