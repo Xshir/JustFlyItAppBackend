@@ -46,6 +46,25 @@ def get_usernames():
             cursor.close()
             connection.close()
 
+def get_usernames_full_names_pair():
+    try:
+        connection = psycopg2.connect(**db_params)
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT usernames, full_names FROM login_details;")
+        usernames = cursor.fetchall()
+
+        return {username[0]: username[1] for username in usernames}
+
+    except psycopg2.Error as error:
+        print("Database Not Online/Database Error")
+        return []
+
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+
 
 def periodic_database_update():
     global username_list
@@ -139,6 +158,8 @@ def login():
         print(username_list, username)
         return jsonify({'success': False, 'message': 'Invalid username'})
     
+
+    
 @app.route('/uptime')
 def get_uptime():
     current_time = time.time()
@@ -178,6 +199,13 @@ def view_database():
         if connection:
             cursor.close()
             connection.close()
+
+
+@app.route('/get_usernames_full_names', methods=['GET'])
+def get_usernames_full_names():
+    result = get_usernames_full_names_pair()
+    return jsonify(result)
+
 
 @app.route('/trainers_profile_data')
 def get_trainers_profile_data():
