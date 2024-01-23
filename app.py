@@ -118,7 +118,7 @@ schedule.every(2).weeks.do(backup_and_send_email)
 database_update_thread = Thread(target=periodic_database_update)
 database_update_thread.start()
 
-@app.route("/")
+@app.route("/webserver")
 def home():
     return render_template("home.html")
 
