@@ -141,6 +141,8 @@ database_update_thread.start()
 def home():
     return render_template("home.html")
 
+
+
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -148,15 +150,39 @@ def login():
     username = data.get('username')
 
     if username in username_list:
+        # Assuming is_staff is retrieved from the database
+        is_staff = check_is_staff(username)
+        
         print("LOGIN SUCCESS")
-        return jsonify({'success': True, 'message': 'Login successful'})
+        return jsonify({'success': True, 'message': 'Login successful', 'is_staff': is_staff})
     elif username == "devlogin":
         print("LOGIN SUCCESS (DEVLOGIN)")
-        return jsonify({'success': True, 'message': 'Login successful'})
+        return jsonify({'success': True, 'message': 'Login successful', 'is_staff': True})  # Assuming devlogin is staff
     else:
         print("LOGIN FAILURE")
         print(username_list, username)
         return jsonify({'success': False, 'message': 'Invalid username'})
+
+def check_is_staff(username):
+    try:
+        connection = psycopg2.connect(**db_params)
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT is_staff FROM login_details WHERE username = %s;", (username,))
+        is_staff = cursor.fetchone()
+
+        return is_staff[0] if is_staff else False  # Assuming is_staff is a boolean column
+
+    except psycopg2.Error as error:
+        print("Database Error:", error)
+        return False
+
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+
+
     
 
     
@@ -201,10 +227,6 @@ def view_database():
             connection.close()
 
 
-@app.route('/get_usernames_full_names', methods=['GET'])
-def get_usernames_full_names():
-    result = get_usernames_full_names_pair()
-    return jsonify(result)
 
 
 @app.route('/trainers_profile_data')
