@@ -168,7 +168,7 @@ def check_is_staff(username):
         connection = psycopg2.connect(**db_params)
         cursor = connection.cursor()
 
-        cursor.execute("SELECT is_staff FROM login_details WHERE username = %s;", (username,))
+        cursor.execute("SELECT is_staff FROM login_details WHERE usernames = %s;", (username,))
         is_staff = cursor.fetchone()
 
         return is_staff[0] if is_staff else False  # Assuming is_staff is a boolean column
