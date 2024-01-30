@@ -239,7 +239,7 @@
     <script>
         // JavaScript for making the table resizable
         document.querySelectorAll('.resizable').forEach(function(table) {
-            const cols = table.getElementsByTagName('col');
+            const cols = table.getElementsByTagName('colgroup')[0].getElementsByTagName('col');
             
             if (cols) {
                 let startX, startWidth;
