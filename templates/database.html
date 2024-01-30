@@ -160,26 +160,29 @@
 </head>
 <body>
     <script>
-        // Function to toggle title case
         function toggleTitleCase() {
             var titleCase = document.getElementById('titleCaseToggle').checked;
             var tables = document.querySelectorAll('table');
-
-            tables.forEach(function(table) {
+    
+            tables.forEach(function (table) {
                 var headers = table.querySelectorAll('th');
-                headers.forEach(function(header) {
+                headers.forEach(function (header) {
                     header.classList.toggle('titlecase', titleCase);
                 });
             });
         }
+    
         function checkLogin() {
             var username = document.getElementById('username').value;
             var password = document.getElementById('password').value;
-
+    
             // Perform your authentication logic here
             // For simplicity, let's assume a hardcoded username and password
             if (username === 'JFI' && password === 'JFI123') {
-                // Successful login, show the content
+                // Successful login, store the login state in session storage
+                sessionStorage.setItem('loggedIn', 'true');
+    
+                // Hide the login form and show the content
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('content').style.display = 'block';
             } else {
@@ -187,8 +190,18 @@
                 alert('Invalid username or password. Please try again.');
             }
         }
-
+    
+        // Check the login state on page load
+        window.onload = function () {
+            var loggedIn = sessionStorage.getItem('loggedIn');
+            if (loggedIn === 'true') {
+                // If logged in, hide the login form and show the content
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            }
+        };
     </script>
+    
 
     <div id="loginForm">
         <label for="username">Username:</label>
