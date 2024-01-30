@@ -141,8 +141,7 @@ database_update_thread.start()
 def home():
     return render_template("home.html")
 
-
-
+# Modify the login route to include is_staff and full_name information
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -150,40 +149,42 @@ def login():
     username = data.get('username')
 
     if username in username_list:
-        # Assuming is_staff is retrieved from the database
-        is_staff = check_is_staff(username)
+        # Assuming is_staff and full_name are retrieved from the database
+        is_staff, full_name = check_user_info(username)
         
-        print("LOGIN SUCCESS")
-        return jsonify({'success': True, 'message': 'Login successful', 'is_staff': is_staff})
+        print(f"LOGIN SUCCESS | is_staff: {is_staff}")
+        return jsonify({'success': True, 'message': 'Login successful', 'is_staff': is_staff, 'full_name': full_name})
     elif username == "devlogin":
         print("LOGIN SUCCESS (DEVLOGIN)")
-        return jsonify({'success': True, 'message': 'Login successful', 'is_staff': True})  # Assuming devlogin is staff
+        return jsonify({'success': True, 'message': 'Login successful', 'is_staff': True, 'full_name': 'Dev Trainer'})  # Assuming devlogin is staff
     else:
         print("LOGIN FAILURE")
         print(username_list, username)
         return jsonify({'success': False, 'message': 'Invalid username'})
 
-def check_is_staff(username):
+# Function to retrieve is_staff and full_name information
+def check_user_info(username):
     try:
         connection = psycopg2.connect(**db_params)
         cursor = connection.cursor()
 
-        cursor.execute("SELECT is_staff FROM login_details WHERE usernames = %s;", (username,))
-        is_staff = cursor.fetchone()
+        cursor.execute("SELECT is_staff, full_names FROM login_details WHERE username = %s;", (username,))
+        user_info = cursor.fetchone()
 
-        return is_staff[0] if is_staff else False  # Assuming is_staff is a boolean column
+        if user_info:
+            return user_info[0], user_info[1]
+        else:
+            return False, None
 
     except psycopg2.Error as error:
         print("Database Error:", error)
-        return False
+        return False, None
 
     finally:
         if connection:
             cursor.close()
             connection.close()
 
-
-    
 
     
 @app.route('/uptime')
