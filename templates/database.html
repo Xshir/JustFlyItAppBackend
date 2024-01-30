@@ -31,44 +31,6 @@
             font-size: 1.5em;
         }
 
-        table {
-            border-collapse: collapse;
-            width: 80%;
-            margin-top: 20px;
-            background-color: #61dafb;
-            border: 2px solid #282c35;
-            border-radius: 8px;
-            overflow: hidden;
-            color: #282c35; /* Text color for table content */
-            resize: both;
-            overflow: auto;
-            display: inline-block;
-            max-width: 100%;
-        }
-
-        th, td {
-            border: 1px solid #282c35;
-            padding: 12px;
-            text-align: left;
-            background-color: #61dafb;
-        }
-
-        th {
-            background-color: #282c35;
-            color: #ffffff;
-        }
-
-        /* Style for header cells */
-        th {
-            background-color: #61dafb;
-            color: #282c35;
-        }
-
-        /* Additional style for title case text */
-        .titlecase {
-            text-transform: capitalize;
-        }
-
         /* Style for the login form */
         #loginForm {
             display: flex;
@@ -156,6 +118,39 @@
         input:checked + .toggle-slider:before {
             transform: translateX(26px);
         }
+
+        /* Style for the table container */
+        .table-container {
+            width: 80%;
+            overflow-x: auto;
+            margin-top: 20px;
+            background-color: #61dafb;
+            border: 2px solid #282c35;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #282c35; /* Text color for table content */
+        }
+
+        th, td {
+            border: 1px solid #282c35;
+            padding: 12px;
+            text-align: left;
+            background-color: #61dafb;
+        }
+
+        th {
+            background-color: #282c35;
+            color: #ffffff;
+        }
+
+        /* Additional style for title case text */
+        .titlecase {
+            text-transform: capitalize;
+        }
     </style>
 </head>
 <body>
@@ -212,62 +207,25 @@
             </label>
         </div>
 
-        {% for table_name, table_data in tables.items() %}
-            <h2>{{ table_name|replace('_', ' ')|title }}</h2>
-            <table id="{{ 'table-' + loop.index|string }}" class="resizable">
-                <colgroup>
-                    {% for _ in table_data[0] %}
-                        <col style="width: auto;">
-                    {% endfor %}
-                </colgroup>
-                <tr>
-                    {% for column_name in table_data[0].keys() %}
-                        <th class="{{ 'titlecase-' + loop.index|string }}">{{ column_name|replace('_', ' ') }}</th>
-                    {% endfor %}
-                </tr>
-                {% for row in table_data %}
+        <div class="table-container">
+            {% for table_name, table_data in tables.items() %}
+                <h2>{{ table_name|replace('_', ' ')|title }}</h2>
+                <table>
                     <tr>
-                        {% for value in row.values() %}
-                            <td>{{ value }}</td>
+                        {% for column_name in table_data[0].keys() %}
+                            <th class="{{ 'titlecase-' + loop.index|string }}">{{ column_name|replace('_', ' ') }}</th>
                         {% endfor %}
                     </tr>
-                {% endfor %}
-            </table>
-        {% endfor %}
+                    {% for row in table_data %}
+                        <tr>
+                            {% for value in row.values() %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endfor %}
+        </div>
     </div>
-
-    <script>
-        // JavaScript for making the table resizable
-        document.querySelectorAll('.resizable').forEach(function(table) {
-            const cols = table.getElementsByTagName('colgroup')[0].getElementsByTagName('col');
-            
-            if (cols) {
-                let startX, startWidth;
-                
-                for (let i = 0; i < cols.length - 1; i++) {
-                    cols[i].addEventListener('mousedown', function(e) {
-                        startX = e.pageX;
-                        startWidth = this.offsetWidth;
-                        document.addEventListener('mousemove', handleMouseMove);
-                        document.addEventListener('mouseup', () => {
-                            document.removeEventListener('mousemove', handleMouseMove);
-                        });
-                    });
-                }
-
-                // Handle the last column separately
-                const lastCol = cols[cols.length - 1];
-                lastCol.style.width = 'auto';
-                
-                function handleMouseMove(e) {
-                    const diffX = e.pageX - startX;
-                    const newWidth = startWidth + diffX;
-                    if (newWidth > 0) {
-                        cols[cols.length - 1].style.width = newWidth + 'px';
-                    }
-                }
-            }
-        });
-    </script>
 </body>
 </html>
