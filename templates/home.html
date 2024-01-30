@@ -33,7 +33,6 @@
         #uptime {
             font-size: 1.2em;
             font-weight: bold;
-            transition: color 0.3s ease-out; /* Updated the transition timing function */
         }
 
         .button-container {
@@ -66,7 +65,7 @@
 
     <div class="button-container">
         <button onclick="redirectToAdminer()">Adminer</button>
-        <button onclick="redirectToDatabase()">Data Viewer</button>
+        <button onclick="redirectToDatabase()">Da Viewer</button>
     </div>
 
     <script>
@@ -74,16 +73,7 @@
             const response = await fetch('/uptime');
             const data = await response.json();
             const uptimeElement = document.getElementById('uptime');
-            const formattedUptime = formatUptime(data.uptime);
-            
-            // Check if the content is different before updating and triggering the transition
-            if (uptimeElement.innerText !== formattedUptime) {
-                uptimeElement.style.color = '#61dafb'; // Change to the desired color before transition
-                setTimeout(() => {
-                    uptimeElement.innerText = formattedUptime;
-                    uptimeElement.style.color = 'white'; // Change back to the original color after transition
-                }, 50); // Adjust the duration of the transition (in milliseconds)
-            }
+            uptimeElement.innerText = formatUptime(data.uptime);
         }
 
         function formatUptime(uptime) {
