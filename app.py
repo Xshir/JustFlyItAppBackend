@@ -168,7 +168,7 @@ def check_user_info(username):
         connection = psycopg2.connect(**db_params)
         cursor = connection.cursor()
 
-        cursor.execute("SELECT is_staff, full_names FROM login_details WHERE username = %s;", (username,))
+        cursor.execute("SELECT is_staff, full_name FROM login_details WHERE username = %s;", (username,))
         user_info = cursor.fetchone()
 
         if user_info:
