@@ -40,6 +40,10 @@
             border-radius: 8px;
             overflow: hidden;
             color: #282c35; /* Text color for table content */
+            resize: both;
+            overflow: auto;
+            display: inline-block;
+            max-width: 100%;
         }
 
         th, td {
@@ -168,6 +172,7 @@
                 });
             });
         }
+
         function checkLogin() {
             var username = document.getElementById('username').value;
             var password = document.getElementById('password').value;
@@ -208,9 +213,10 @@
             </label>
         </div>
 
+        <!-- Your existing table rendering logic with the resizable property -->
         {% for table_name, table_data in tables.items() %}
             <h2>{{ table_name|replace('_', ' ')|title }}</h2>
-            <table id="{{ 'table-' + loop.index|string }}">
+            <table id="{{ 'table-' + loop.index|string }}" class="resizable">
                 <tr>
                     {% for column_name in table_data[0].keys() %}
                         <th class="{{ 'titlecase-' + loop.index|string }}">{{ column_name|replace('_', ' ') }}</th>
@@ -226,5 +232,33 @@
             </table>
         {% endfor %}
     </div>
+
+    <script>
+        // JavaScript for making the table resizable
+        document.querySelectorAll('.resizable').forEach(function(table) {
+            const row = table.getElementsByTagName('tr')[0];
+            const cols = row ? row.children : undefined;
+            
+            if (cols) {
+                let startX, startWidth;
+                
+                for (let i = 0; i < cols.length; i++) {
+                    cols[i].addEventListener('mousedown', function(e) {
+                        startX = e.pageX;
+                        startWidth = this.offsetWidth;
+                        document.addEventListener('mousemove', handleMouseMove);
+                        document.addEventListener('mouseup', () => {
+                            document.removeEventListener('mousemove', handleMouseMove);
+                        });
+                    });
+                }
+                
+                function handleMouseMove(e) {
+                    const diffX = e.pageX - startX;
+                    cols[0].style.width = startWidth + diffX + 'px';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
