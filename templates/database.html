@@ -168,6 +168,22 @@
                 });
             });
         }
+        function checkLogin() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            // Perform your authentication logic here
+            // For simplicity, let's assume a hardcoded username and password
+            if (username === 'your_username' && password === 'your_password') {
+                // Successful login, show the content
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            } else {
+                // Failed login, you can display an error message or take other actions
+                alert('Invalid username or password. Please try again.');
+            }
+        }
+
     </script>
 
     <div id="loginForm">
