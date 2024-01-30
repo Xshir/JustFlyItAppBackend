@@ -115,6 +115,7 @@
 
         .toggle-label {
             color: #61dafb;
+            margin-bottom: 5px; /* Add margin-bottom for spacing */
         }
 
         .toggle-switch {
@@ -219,7 +220,7 @@
 
         {% for table_name, table_data in tables.items() %}
             <!-- Add a new div for the centered table name -->
-            <div style="text-align: center;">
+            <div style="text-align: center; margin-top: 10px;">
                 <h2>{{ table_name|replace('_', ' ')|title }}</h2>
             </div>
             <table id="{{ 'table-' + loop.index|string }}">
