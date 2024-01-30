@@ -33,7 +33,7 @@
         #uptime {
             font-size: 1.2em;
             font-weight: bold;
-            transition: color 0.3s ease; /* Add a transition for color change */
+            transition: color 0.3s ease-out; /* Updated the transition timing function */
         }
 
         .button-container {
@@ -78,11 +78,11 @@
             
             // Check if the content is different before updating and triggering the transition
             if (uptimeElement.innerText !== formattedUptime) {
-                uptimeElement.innerText = formattedUptime;
-                uptimeElement.style.color = '#61dafb'; // Change to the desired color during transition
+                uptimeElement.style.color = '#61dafb'; // Change to the desired color before transition
                 setTimeout(() => {
+                    uptimeElement.innerText = formattedUptime;
                     uptimeElement.style.color = 'white'; // Change back to the original color after transition
-                }, 300); // Adjust the duration of the transition (in milliseconds)
+                }, 50); // Adjust the duration of the transition (in milliseconds)
             }
         }
 
