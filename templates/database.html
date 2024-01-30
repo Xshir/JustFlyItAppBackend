@@ -31,6 +31,40 @@
             font-size: 1.5em;
         }
 
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin-top: 20px;
+            background-color: #61dafb;
+            border: 2px solid #282c35;
+            border-radius: 8px;
+            overflow: hidden;
+            color: #282c35; /* Text color for table content */
+        }
+
+        th, td {
+            border: 1px solid #282c35;
+            padding: 12px;
+            text-align: left;
+            background-color: #61dafb;
+        }
+
+        th {
+            background-color: #282c35;
+            color: #ffffff;
+        }
+
+        /* Style for header cells */
+        th {
+            background-color: #61dafb;
+            color: #282c35;
+        }
+
+        /* Additional style for title case text */
+        .titlecase {
+            text-transform: capitalize;
+        }
+
         /* Style for the login form */
         #loginForm {
             display: flex;
@@ -118,39 +152,6 @@
         input:checked + .toggle-slider:before {
             transform: translateX(26px);
         }
-
-        /* Style for the table container */
-        .table-container {
-            width: 80%;
-            overflow-x: auto;
-            margin-top: 20px;
-            background-color: #61dafb;
-            border: 2px solid #282c35;
-            border-radius: 8px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            color: #282c35; /* Text color for table content */
-        }
-
-        th, td {
-            border: 1px solid #282c35;
-            padding: 12px;
-            text-align: left;
-            background-color: #61dafb;
-        }
-
-        th {
-            background-color: #282c35;
-            color: #ffffff;
-        }
-
-        /* Additional style for title case text */
-        .titlecase {
-            text-transform: capitalize;
-        }
     </style>
 </head>
 <body>
@@ -167,7 +168,6 @@
                 });
             });
         }
-
         function checkLogin() {
             var username = document.getElementById('username').value;
             var password = document.getElementById('password').value;
@@ -183,6 +183,7 @@
                 alert('Invalid username or password. Please try again.');
             }
         }
+
     </script>
 
     <div id="loginForm">
@@ -207,25 +208,28 @@
             </label>
         </div>
 
-        <div class="table-container">
-            {% for table_name, table_data in tables.items() %}
-                <h2>{{ table_name|replace('_', ' ')|title }}</h2>
-                <table>
+        {% for table_name, table_data in tables.items() %}
+            <h2>{{ table_name|replace('_', ' ')|title }}</h2>
+            <table id="{{ 'table-' + loop.index|string }}" class="resizable">
+                <colgroup>
+                    {% for _ in table_data[0] %}
+                        <col style="width: auto;">
+                    {% endfor %}
+                </colgroup>
+                <tr>
+                    {% for column_name in table_data[0].keys() %}
+                        <th class="{{ 'titlecase-' + loop.index|string }}">{{ column_name|replace('_', ' ') }}</th>
+                    {% endfor %}
+                </tr>
+                {% for row in table_data %}
                     <tr>
-                        {% for column_name in table_data[0].keys() %}
-                            <th class="{{ 'titlecase-' + loop.index|string }}">{{ column_name|replace('_', ' ') }}</th>
+                        {% for value in row.values() %}
+                            <td>{{ value }}</td>
                         {% endfor %}
                     </tr>
-                    {% for row in table_data %}
-                        <tr>
-                            {% for value in row.values() %}
-                                <td>{{ value }}</td>
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
-                </table>
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </table>
+        {% endfor %}
     </div>
 </body>
 </html>
