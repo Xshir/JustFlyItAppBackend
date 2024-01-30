@@ -25,10 +25,22 @@
 
         h1 {
             font-size: 2em;
+            text-align: center; /* Center align the title */
         }
 
         h2 {
             font-size: 1.5em;
+        }
+
+        /* Add a new style for the centered title */
+        #pageTitle {
+            text-align: center;
+        }
+
+        /* Add a new style for the centered toggle label */
+        #toggleLabel {
+            text-align: center;
+            margin-bottom: 10px; /* Add some space between the title and toggle label */
         }
 
         table {
@@ -103,14 +115,14 @@
         /* Style for the toggle switch */
         .toggle-container {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            margin-top: 10px;
+            margin-top: 20px; /* Add some top margin for spacing */
             width: 100%;
             box-sizing: border-box;
         }
 
         .toggle-label {
-            margin-right: 10px;
             color: #61dafb;
         }
 
@@ -197,11 +209,17 @@
     </div>
 
     <div id="content" style="display: none;">
-        <h1>Database Admin Page</h1>
-        
+        <!-- Add a new div for the centered title -->
+        <div id="pageTitle">
+            <h1>Database Admin Page</h1>
+        </div>
+
         <!-- Toggle switch for title case -->
         <div class="toggle-container">
-            <span class="toggle-label">Toggle Title Case:</span>
+            <!-- Add a new div for the centered toggle label -->
+            <div id="toggleLabel">
+                <span class="toggle-label">Toggle Title Case:</span>
+            </div>
             <label class="toggle-switch">
                 <input type="checkbox" id="titleCaseToggle" onclick="toggleTitleCase()">
                 <span class="toggle-slider"></span>
@@ -210,12 +228,7 @@
 
         {% for table_name, table_data in tables.items() %}
             <h2>{{ table_name|replace('_', ' ')|title }}</h2>
-            <table id="{{ 'table-' + loop.index|string }}" class="resizable">
-                <colgroup>
-                    {% for _ in table_data[0] %}
-                        <col style="width: auto;">
-                    {% endfor %}
-                </colgroup>
+            <table id="{{ 'table-' + loop.index|string }}">
                 <tr>
                     {% for column_name in table_data[0].keys() %}
                         <th class="{{ 'titlecase-' + loop.index|string }}">{{ column_name|replace('_', ' ') }}</th>
