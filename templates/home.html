@@ -16,6 +16,8 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            position: relative;
+            overflow: hidden;
         }
 
         h1, h2, p {
@@ -56,6 +58,33 @@
         button:hover {
             background-color: #c0392b; /* Darker Rose Gold on hover */
         }
+
+        /* Airplane animation */
+        .airplane {
+            position: absolute;
+            width: 50px; /* Adjust the size of the airplane */
+            top: 50px; /* Initial position from the top */
+            left: -50px; /* Initial position from the left, outside the screen */
+            animation: airplaneAnimation 20s linear infinite; /* Adjust the animation duration */
+        }
+
+        @keyframes airplaneAnimation {
+            0% {
+                transform: translateX(-50px) translateY(50px) rotate(45deg);
+            }
+            25% {
+                transform: translateX(calc(100vw + 50px)) translateY(50px) rotate(45deg);
+            }
+            50% {
+                transform: translateX(calc(100vw + 50px)) translateY(calc(100vh + 50px)) rotate(45deg);
+            }
+            75% {
+                transform: translateX(-50px) translateY(calc(100vh + 50px)) rotate(45deg);
+            }
+            100% {
+                transform: translateX(-50px) translateY(50px) rotate(45deg);
+            }
+        }
     </style>
 </head>
 <body>
@@ -64,9 +93,12 @@
     <p>Uptime: <span id="uptime"></span></p>
 
     <div class="button-container">
-        <button onclick="redirectToAdminer()">Adminer</button>
-        <button onclick="redirectToDatabase()">Da Viewer</button>
+        <button onclick="redirectToAdminer()">Data Admin</button>
+        <button onclick="redirectToDatabase()">Data Viewer</button>
     </div>
+
+    <!-- Airplane HTML element -->
+    <div class="airplane">✈</div>
 
     <script>
         async function fetchUptime() {
