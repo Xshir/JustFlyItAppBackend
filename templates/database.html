@@ -1,4 +1,4 @@
-hover<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -15,7 +15,7 @@ hover<!DOCTYPE html>
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         h1, h2 {
@@ -99,24 +99,74 @@ hover<!DOCTYPE html>
             background-color: #000000;
             color: #ffffff;
         }
+
+        /* Style for the toggle switch */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .toggle-label {
+            margin-right: 10px;
+            color: #61dafb;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            border-radius: 34px;
+            transition: 0.4s;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            border-radius: 50%;
+            transition: 0.4s;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #61dafb;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
     </style>
 </head>
 <body>
     <script>
-        // Function to check login credentials
-        function checkLogin() {
-            var usernameInput = document.getElementById("username").value;
-            var passwordInput = document.getElementById("password").value;
+        // Function to toggle title case
+        function toggleTitleCase() {
+            var titleCase = document.getElementById('titleCaseToggle').checked;
+            var tables = document.querySelectorAll('table');
 
-            // Check if the entered username and password are correct
-            if (usernameInput === "JustFlyIt" && passwordInput === "JustFlyIt123") {
-                // Successful login, show the content
-                document.getElementById("loginForm").style.display = "none";
-                document.getElementById("content").style.display = "block";
-            } else {
-                // Invalid login, show an alert
-                alert("Invalid credentials. Please try again.");
-            }
+            tables.forEach(function(table) {
+                var headers = table.querySelectorAll('th');
+                headers.forEach(function(header) {
+                    header.classList.toggle('titlecase', titleCase);
+                });
+            });
         }
     </script>
 
@@ -133,8 +183,14 @@ hover<!DOCTYPE html>
     <div id="content" style="display: none;">
         <h1>Database Admin Page</h1>
         
-        <label for="titleCaseSlider">Toggle Title Case:</label>
-        <input type="range" min="0" max="1" value="0" class="slider" id="titleCaseSlider">
+        <!-- Toggle switch for title case -->
+        <div class="toggle-container">
+            <span class="toggle-label">Toggle Title Case:</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="titleCaseToggle" onclick="toggleTitleCase()">
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
 
         {% for table_name, table_data in tables.items() %}
             <h2>{{ table_name|replace('_', ' ')|title }}</h2>
@@ -153,20 +209,6 @@ hover<!DOCTYPE html>
                 {% endfor %}
             </table>
         {% endfor %}
-
-        <script>
-            document.getElementById('titleCaseSlider').addEventListener('input', function() {
-                var titleCase = this.value == 1;
-                var tables = document.querySelectorAll('table');
-                
-                tables.forEach(function(table) {
-                    var headers = table.querySelectorAll('th');
-                    headers.forEach(function(header) {
-                        header.classList.toggle('titlecase', titleCase);
-                    });
-                });
-            });
-        </script>
     </div>
 </body>
 </html>
