@@ -169,12 +169,12 @@
             });
         }
         function checkLogin() {
-            var username = "a";
-            var password = "a";
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
 
             // Perform your authentication logic here
             // For simplicity, let's assume a hardcoded username and password
-            if (username === 'your_username' && password === 'your_password') {
+            if (username === 'JFI' && password === 'JFI123') {
                 // Successful login, show the content
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('content').style.display = 'block';
