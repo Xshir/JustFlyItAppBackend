@@ -170,6 +170,9 @@
                     header.classList.toggle('titlecase', titleCase);
                 });
             });
+    
+            // Store the toggle state in sessionStorage
+            sessionStorage.setItem('titleCaseToggleState', titleCase ? 'true' : 'false');
         }
     
         function checkLogin() {
@@ -179,7 +182,7 @@
             // Perform your authentication logic here
             // For simplicity, let's assume a hardcoded username and password
             if (username === 'JFI' && password === 'JFI123') {
-                // Successful login, store the login state in session storage
+                // Successful login, store the login state in sessionStorage
                 sessionStorage.setItem('loggedIn', 'true');
     
                 // Hide the login form and show the content
@@ -191,7 +194,7 @@
             }
         }
     
-        // Check the login state on page load
+        // Check the login state and toggle button state on page load
         window.onload = function () {
             var loggedIn = sessionStorage.getItem('loggedIn');
             if (loggedIn === 'true') {
@@ -199,8 +202,18 @@
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('content').style.display = 'block';
             }
+    
+            // Retrieve the toggle button state from sessionStorage
+            var titleCaseToggleState = sessionStorage.getItem('titleCaseToggleState');
+            if (titleCaseToggleState === 'true') {
+                // If toggle button was checked, set it to checked
+                document.getElementById('titleCaseToggle').checked = true;
+                // Apply the title case immediately on page load
+                toggleTitleCase();
+            }
         };
     </script>
+    
     
 
     <div id="loginForm">
