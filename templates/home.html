@@ -6,7 +6,7 @@
     <title>WebServer</title>
     <style>
         body {
-            background-color: black;
+            background-color: #222;
             color: white;
             font-family: Arial, sans-serif;
             margin: 0;
@@ -34,12 +34,39 @@
             font-size: 1.2em;
             font-weight: bold;
         }
+
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #B76E79; /* Rose Gold Color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #c0392b; /* Darker Rose Gold on hover */
+        }
     </style>
 </head>
 <body>
     <h1>WebServer</h1>
     
     <p>Uptime: <span id="uptime"></span></p>
+
+    <div class="button-container">
+        <button onclick="redirectToAdminer()">Go to Adminer</button>
+        <button onclick="redirectToDatabase()">Go to /database</button>
+    </div>
 
     <script>
         async function fetchUptime() {
@@ -55,6 +82,19 @@
             const minutes = Math.floor((uptime % (60 * 60)) / 60)
             const seconds = Math.floor(uptime % 60);
             return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        function redirectToAdminer() {
+            const domain = window.location.hostname;
+            window.location.href = `http://${domain}:8080/database`;
+        }
+
+        function redirectToDatabase() {
+            const domain = window.location.hostname;
+            // Assuming your current URL is http://your_domain_or_ip/some/path
+            var currentUrl = window.location.href;
+            var baseUrl = currentUrl.split('/').slice(0, -1).join('/'); // Remove the last part of the path
+            window.location.href = `${baseUrl}/database`;
         }
 
         fetchUptime();

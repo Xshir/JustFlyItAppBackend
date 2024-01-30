@@ -6,19 +6,21 @@
     <title>Database Admin Page</title>
     <style>
         body {
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
+            background-color: #282c35;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            height: 100vh;
         }
 
         h1, h2 {
             margin: 10px;
+            color: #61dafb;
         }
 
         h1 {
@@ -33,68 +35,137 @@
             border-collapse: collapse;
             width: 80%;
             margin-top: 20px;
-            background-color: #001f3f;
+            background-color: #61dafb;
+            border: 2px solid #282c35;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         th, td {
-            border: 1px solid white;
-            padding: 8px;
+            border: 1px solid #282c35;
+            padding: 12px;
             text-align: left;
+            background-color: #61dafb;
         }
 
         th {
-            background-color: #444444;
-            color: white;
+            background-color: #282c35;
+            color: #ffffff;
         }
 
         /* Style for header cells */
         th {
-            background-color: #FFD700;
-            color: #222222; /* Dark text on gold background */
+            background-color: #61dafb;
+            color: #282c35;
         }
 
         /* Additional style for title case text */
         .titlecase {
             text-transform: capitalize;
         }
+
+        /* Style for the login form */
+        #loginForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 50px;
+            background-color: #61dafb;
+            border: 2px solid #282c35;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #loginForm label, #loginForm input, #loginForm button {
+            margin-bottom: 10px;
+            width: 100%;
+            color: #333; /* Dark grey text for better readability */
+        }
+
+        #loginForm button {
+            background-color: #61dafb;
+            color: #282c35;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        #loginForm button:hover {
+            background-color: #000000;
+            color: #ffffff;
+        }
     </style>
 </head>
 <body>
-    <h1>Database Admin Page</h1>
-    
-    <label for="titleCaseSlider">Toggle Title Case:</label>
-    <input type="range" min="0" max="1" value="0" class="slider" id="titleCaseSlider">
+    <script>
+        // Function to check login credentials
+        function checkLogin() {
+            var usernameInput = document.getElementById("username").value;
+            var passwordInput = document.getElementById("password").value;
 
-    {% for table_name, table_data in tables.items() %}
-        <h2>{{ table_name|replace('_', ' ')|title }}</h2>
-        <table id="{{ 'table-' + loop.index|string }}">
-            <tr>
-                {% for column_name in table_data[0].keys() %}
-                    <th class="{{ 'titlecase-' + loop.index|string }}">{{ column_name|replace('_', ' ') }}</th>
-                {% endfor %}
-            </tr>
-            {% for row in table_data %}
+            // Check if the entered username and password are correct
+            if (usernameInput === "JustFlyIt" && passwordInput === "JustFlyIt123") {
+                // Successful login, show the content
+                document.getElementById("loginForm").style.display = "none";
+                document.getElementById("content").style.display = "block";
+            } else {
+                // Invalid login, show an alert
+                alert("Invalid credentials. Please try again.");
+            }
+        }
+    </script>
+
+    <div id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username">
+
+        <label for="password">Password:</label>
+        <input type="password" id="password">
+
+        <button onclick="checkLogin()">Login</button>
+    </div>
+
+    <div id="content" style="display: none;">
+        <h1>Database Admin Page</h1>
+        
+        <label for="titleCaseSlider">Toggle Title Case:</label>
+        <input type="range" min="0" max="1" value="0" class="slider" id="titleCaseSlider">
+
+        {% for table_name, table_data in tables.items() %}
+            <h2>{{ table_name|replace('_', ' ')|title }}</h2>
+            <table id="{{ 'table-' + loop.index|string }}">
                 <tr>
-                    {% for value in row.values() %}
-                        <td>{{ value }}</td>
+                    {% for column_name in table_data[0].keys() %}
+                        <th class="{{ 'titlecase-' + loop.index|string }}">{{ column_name|replace('_', ' ') }}</th>
                     {% endfor %}
                 </tr>
-            {% endfor %}
-        </table>
-    {% endfor %}
+                {% for row in table_data %}
+                    <tr>
+                        {% for value in row.values() %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endfor %}
 
-    <script>
-        document.getElementById('titleCaseSlider').addEventListener('input', function() {
-            var titleCase = this.value == 1;
-            var tables = document.querySelectorAll('table');
-            
-            tables.forEach(function(table) {
-                var headers = table.querySelectorAll('th');
-                headers.forEach(function(header) {
-                    header.classList.toggle('titlecase', titleCase);
+        <script>
+            document.getElementById('titleCaseSlider').addEventListener('input', function() {
+                var titleCase = this.value == 1;
+                var tables = document.querySelectorAll('table');
+                
+                tables.forEach(function(table) {
+                    var headers = table.querySelectorAll('th');
+                    headers.forEach(function(header) {
+                        header.classList.toggle('titlecase', titleCase);
+                    });
                 });
             });
-        });
-    </script>
+        </script>
+    </div>
 </body>
 </html>
