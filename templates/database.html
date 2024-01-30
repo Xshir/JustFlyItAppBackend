@@ -188,7 +188,6 @@
                 alert('Invalid username or password. Please try again.');
             }
         }
-
     </script>
 
     <div id="loginForm">
@@ -213,10 +212,14 @@
             </label>
         </div>
 
-        <!-- Your existing table rendering logic with the resizable property -->
         {% for table_name, table_data in tables.items() %}
             <h2>{{ table_name|replace('_', ' ')|title }}</h2>
             <table id="{{ 'table-' + loop.index|string }}" class="resizable">
+                <colgroup>
+                    {% for _ in table_data[0] %}
+                        <col style="width: {{ 100 / loop.length }}%;">
+                    {% endfor %}
+                </colgroup>
                 <tr>
                     {% for column_name in table_data[0].keys() %}
                         <th class="{{ 'titlecase-' + loop.index|string }}">{{ column_name|replace('_', ' ') }}</th>
@@ -236,13 +239,12 @@
     <script>
         // JavaScript for making the table resizable
         document.querySelectorAll('.resizable').forEach(function(table) {
-            const row = table.getElementsByTagName('tr')[0];
-            const cols = row ? row.children : undefined;
+            const cols = table.getElementsByTagName('col');
             
             if (cols) {
                 let startX, startWidth;
                 
-                for (let i = 0; i < cols.length; i++) {
+                for (let i = 0; i < cols.length - 1; i++) {
                     cols[i].addEventListener('mousedown', function(e) {
                         startX = e.pageX;
                         startWidth = this.offsetWidth;
@@ -252,10 +254,17 @@
                         });
                     });
                 }
+
+                // Handle the last column separately
+                const lastCol = cols[cols.length - 1];
+                lastCol.style.width = 'auto';
                 
                 function handleMouseMove(e) {
                     const diffX = e.pageX - startX;
-                    cols[0].style.width = startWidth + diffX + 'px';
+                    const newWidth = startWidth + diffX;
+                    if (newWidth > 0) {
+                        cols[cols.length - 1].style.width = newWidth + 'px';
+                    }
                 }
             }
         });
