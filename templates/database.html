@@ -217,7 +217,7 @@
             <table id="{{ 'table-' + loop.index|string }}" class="resizable">
                 <colgroup>
                     {% for _ in table_data[0] %}
-                        <col style="width: {{ 100 / loop.length }}%;">
+                        <col style="width: auto;">
                     {% endfor %}
                 </colgroup>
                 <tr>
