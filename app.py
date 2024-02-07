@@ -146,11 +146,12 @@ def home():
 def login():
     data = request.get_json()
     print('Received data:', data)
-    username = data.get('username')
+    username_lower = username.lower()
 
-    if username in username_list:
+    # Check if the lowercase input username is in the lowercase username_list
+    if username_lower in [u.lower() for u in username_list]:
         # Assuming is_staff and full_name are retrieved from the database
-        is_staff, full_name = check_user_info(username)
+        is_staff, full_name = check_user_info(username_lower)
         
         print(f"LOGIN SUCCESS | is_staff: {is_staff}")
         return jsonify({'success': True, 'message': 'Login successful', 'is_staff': is_staff, 'full_name': full_name})
