@@ -146,6 +146,7 @@ def home():
 def login():
     data = request.get_json()
     print('Received data:', data)
+    username = data.get('username')
     username_lower = username.lower()
 
     # Check if the lowercase input username is in the lowercase username_list
